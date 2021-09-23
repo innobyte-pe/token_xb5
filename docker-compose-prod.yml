@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
 
-  users:
+  token:
     build:
-      context: ./services/users
+      context: ./services/token
       dockerfile: Dockerfile-prod
     #volumes:
     #  - './services/users:/usr/src/app'
@@ -18,13 +18,13 @@ services:
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test  # nuevo
 
     depends_on:  # nuevo
-      - users-db
+      - token-db
     expose:
       - 5000
 
-  users-db:  # nuevo
+  token-db:  # nuevo
     build:
-      context: ./services/users/project/db
+      context: ./services/token/project/db
       dockerfile: Dockerfile
     #ports:
     #  - 5435:5432
@@ -42,4 +42,4 @@ services:
     ports:
       - 80:80
     depends_on:
-      - users
+      - token
