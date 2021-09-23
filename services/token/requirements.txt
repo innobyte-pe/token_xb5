@@ -1,0 +1,11 @@
+flask==1.1.2
+Flask-RESTful==0.3.8
+Flask-SQLAlchemy==2.4.4
+psycopg2-binary==2.8.6
+Flask-Testing==0.8.0
+gunicorn==20.0.4
+coverage==5.2
+flake8==3.8.4
+flask-debugtoolbar==0.11.0
+requests
+rich

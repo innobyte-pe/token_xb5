@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+
+  token:
+    build:
+      context: ./services/token
+      dockerfile: Dockerfile
+    volumes:
+      - './services/token:/usr/src/app'
+    ports:
+      - 5001:5000
+    environment:
+      #- FLASK_APP=project/__init__.py
+      - FLASK_ENV=development
+      - APP_SETTINGS=project.config.DevelopmentConfig  # nuevo
+      - DATABASE_URL=postgres://postgres:postgres@token-db:5432/users_account_dev  # nuevo
+      - DATABASE_TEST_URL=postgres://postgres:postgres@token-db:5432/users_account_test  # nuevo
+
+    depends_on:  # nuevo
+      - token-db
+
+  token-db:  # nuevo
+    build:
+      context: ./services/token/project/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "jhordyho@innobyte.pe"
+      PGADMIN_DEFAULT_PASSWORD: "SuperSecret"
+    volumes:
+      - ./configs/servers.json:/pgadmin4/servers.json
+    networks:
+      default:
+        aliases:
+         - pgadmin
+    ports:
+      - 81:80
+    depends_on:
+      - token-db
+      
+  nginx:
+    build:
+      context: ./services/nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - token
