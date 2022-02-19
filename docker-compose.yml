@@ -14,38 +14,33 @@ services:
       #- FLASK_APP=project/__init__.py
       - FLASK_ENV=development
       - APP_SETTINGS=project.config.DevelopmentConfig  # nuevo
-      - DATABASE_URL=postgres://postgres:postgres@token-db:5432/users_account_dev  # nuevo
-      - DATABASE_TEST_URL=postgres://postgres:postgres@token-db:5432/users_account_test  # nuevo
+      #- DATABASE_URL=postgres://postgres:postgres@token-db:5432/users_account_dev  # nuevo
+      - DATABASE_URL=mysql://user:password@token-db:3306/db  # nuevo
+      - DATABASE_TEST_URL=mysql://user:password@token-db:3306/db  # nuevo
 
     depends_on:  # nuevo
       - token-db
 
-  token-db:  # nuevo
+  token-db:  # nuevo Mysql
     build:
       context: ./services/token/project/db
       dockerfile: Dockerfile
     ports:
-      - 5435:5432
+      - 3306:3306
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "jhordyho@innobyte.pe"
-      PGADMIN_DEFAULT_PASSWORD: "SuperSecret"
-    volumes:
-      - ./configs/servers.json:/pgadmin4/servers.json
-    networks:
-      default:
-        aliases:
-         - pgadmin
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
     ports:
-      - 81:80
-    depends_on:
-      - token-db
-      
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1   
+      - PMA_HOST=token-db
+  
   nginx:
     build:
       context: ./services/nginx

@@ -18,9 +18,11 @@ class User(db.Model):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
 
-    def __init__(self, username, email):
+    def __init__(self, username, email,mac,auth_token):
         self.username = username
         self.email = email
+        self.mac = mac
+        self.auth_key = auth_token
 
     def to_json(self):
         return {

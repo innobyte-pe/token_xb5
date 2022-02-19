@@ -137,10 +137,42 @@ class HuamiCallbackApi(Resource):
         else:
             return response_object
 
+class HuamiCallbackApiRegister(Resource):
+    def post(self):
+        post_data = request.get_json()
+
+        response_object = {
+            'status': 'fail',
+            'message': 'Invalid payload.'
+        }
+        print(not post_data)
+        if not post_data:
+            return response_object, 400
+        username= post_data.get('username')
+        email= post_data.get('email')
+        mac= post_data.get('mac')
+        auth_key= post_data.get('auth_key')
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            db.session.add(User(
+                username= username,
+                email= email,
+                mac= mac,
+                auth_token= auth_key))
+            db.session.commit()
+            response_object['status'] = 'success'
+            response_object['message'] = f'{email} was added!'
+            return response_object, 201
+
+
+
 
 
 api.add_resource(HuamiCallback, '/xiaomi/callback')
 api.add_resource(HuamiCallbackApi, '/api/auth/xiaomi/')
+api.add_resource(HuamiCallbackApiRegister, '/api/auth/xiaomi/register')
 
 
 @users_blueprint.route('/', methods=['GET'])
