@@ -5,7 +5,7 @@ services:
   token:
     build:
       context: ./services/token
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
     volumes:
       - './services/token:/usr/src/app'
     ports:

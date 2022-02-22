@@ -5,7 +5,7 @@ services:
   token:
     build:
       context: ./services/token
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile
     #volumes:
     #  - './services/users:/usr/src/app'
     #ports:
