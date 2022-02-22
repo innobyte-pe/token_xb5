@@ -1,11 +1,11 @@
 #!/bin/sh
 
-echo "Esperando a postgres..."
+echo "Esperando a Mysql..."
 
-while ! nc -z token-db 5432; do
+while ! nc -z token-db 3306; do
   sleep 0.1
 done
 
-echo "PostgreSQL iniciado"
+echo "Mysql iniciado"
 
 gunicorn -b 0.0.0.0:5000 manage:app
