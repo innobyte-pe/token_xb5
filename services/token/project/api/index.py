@@ -257,6 +257,7 @@ class UserPairingCallbackApi(Resource):
         auth_token = post_data.get('auth_token')
         mac = post_data.get('mac')
         code_pairing = post_data.get('code_pairing')
+        name_user = post_data.get('name_user')
         
         try:
          
@@ -270,12 +271,12 @@ class UserPairingCallbackApi(Resource):
                     username=email.split("#")[0],
                     email=email,
                     password=password,
-                    name="",
+                    name=name_user,
                     auth_token=auth_token)
             if not business:
                 response_object['status'] = 'false'
                 response_object['message'] = f'{code_pairing}, pairing code is not related to any company!'
-                return response_object, 201
+                return response_object,400 
 
 
             user.device = device #One relation
