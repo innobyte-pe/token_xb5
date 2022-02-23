@@ -245,7 +245,7 @@ class UserPairingCallbackApi(Resource):
     def post(self):
         post_data = request.get_json()
         response_object = {
-            'status': 'fail',
+            'success': False,
             'message': 'Invalid payload.'
         }
         if not post_data:
@@ -268,7 +268,7 @@ class UserPairingCallbackApi(Resource):
                 device = Device(auth_token=auth_token,mac=mac)
             if not user:
                 user = User(
-                    username=email.split("#")[0],
+                    username=email.split("@")[0],
                     email=email,
                     password=password,
                     name=name_user,
