@@ -276,7 +276,7 @@ class UserPairingCallbackApi(Resource):
             if not business:
                 response_object['status'] = 'false'
                 response_object['message'] = f'{code_pairing}, pairing code is not related to any company!'
-                return response_object,400 
+                return response_object, 200
 
 
             user.device = device #One relation
