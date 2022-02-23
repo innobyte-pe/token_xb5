@@ -14,27 +14,10 @@ services:
       #- FLASK_APP=project/__init__.py
       - FLASK_ENV=production
       - APP_SETTINGS=project.config.DevelopmentConfig  # nuevo
-      - DATABASE_URL=mysql://user:password@token-db:3306/db  # nuevo
-      - DATABASE_TEST_URL=mysql://user:password@token-db:3306/db  # nuevo
-
-    depends_on:  # nuevo
-      - token-db
+      - DATABASE_URL=mysql://isleep:Buenw1f1c4$A@aa50fi43w78xdt.c0xvoargw4wq.us-east-1.rds.amazonaws.com:3306/db  # nuevo
+      - DATABASE_TEST_URL=mysql://isleep:Buenw1f1c4$A@aa50fi43w78xdt.c0xvoargw4wq.us-east-1.rds.amazonaws.com:3306/db  # nuevo
     expose:
       - 5000
-
-  token-db:  # nuevo
-    build:
-      context: ./services/token/project/db
-      dockerfile: Dockerfile
-    #ports:
-    #  - 3306:3306
-    environment:
-      - MYSQL_DATABASE=db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
-    expose: 
-      - 3306
 
   nginx:
     build:
