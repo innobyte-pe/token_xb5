@@ -6,6 +6,7 @@ RUN apk update && \
     apk add --virtual build-deps gcc python3-dev musl-dev && \
     apk add mysql-dev && \
     apk add netcat-openbsd && \
+    apk add mysql-client && \
     apk add g++
 
 
