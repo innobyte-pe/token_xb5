@@ -274,7 +274,7 @@ class UserPairingCallbackApi(Resource):
                     name=name_user,
                     auth_token=auth_token)
             if not business:
-                response_object['status'] = 'false'
+                response_object['success'] = False
                 response_object['message'] = f'{code_pairing}, pairing code is not related to any company!'
                 return response_object, 200
 
@@ -283,7 +283,7 @@ class UserPairingCallbackApi(Resource):
             user.business = business #One relation
             db.session.add(user)
             db.session.commit()
-            response_object['status'] = 'success'
+            response_object['success'] = True
             response_object['message'] = f'{mac} device pairing 'f'{user.email} success!'
             return response_object, 201
 
