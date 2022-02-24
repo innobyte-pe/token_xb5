@@ -18,6 +18,7 @@ services:
       - DATABASE_TEST_URL=mysql://isleep:Buenw1f1c4$A@aa50fi43w78xdt.c0xvoargw4wq.us-east-1.rds.amazonaws.com:3306/ebdb  # nuevo
     expose:
       - 5000
+      - 3306
 
   nginx:
     build:
