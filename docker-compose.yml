@@ -14,8 +14,8 @@ services:
       #- FLASK_APP=project/__init__.py
       - FLASK_ENV=production
       - APP_SETTINGS=project.config.DevelopmentConfig  # nuevo
-      - DATABASE_URL=mysql://isleep:Buenw1f1c4$A@aa50fi43w78xdt.c0xvoargw4wq.us-east-1.rds.amazonaws.com:3306/ebdb  # nuevo
-      - DATABASE_TEST_URL=mysql://isleep:Buenw1f1c4$A@aa50fi43w78xdt.c0xvoargw4wq.us-east-1.rds.amazonaws.com:3306/ebdb  # nuevo
+      - DATABASE_URL=mysql://${RDS_USERNAME}:${RDS_PASSWORD}@${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}  # nuevo
+      - DATABASE_TEST_URL=mysql://${RDS_USERNAME}:${RDS_PASSWORD}@${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}  # nuevo
     expose:
       - 5000
       - 3306
