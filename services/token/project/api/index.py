@@ -51,7 +51,8 @@ class HuamiCallback(Resource):
         for device_key in device_keys:
             device_keys[device_key]
 
-        return device_keys
+        #return device_keys
+        return render_template('xiaomi.html')
 
 class HuamiCallbackApi(Resource):
     def post(self):
