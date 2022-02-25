@@ -309,11 +309,6 @@ api.add_resource(UserPairingCallbackApi, '/api/user/pairing')
 #api.add_resource(HuamiCallbackApiRegister, '/api/user/delete')
 
 
-@users_blueprint.route('/', methods=['GET'])
+@users_blueprint.route('/xiaomi/activate', methods=['GET'])
 def index():
-    #return render_template('index.html')
-    response_object = {
-            'status': 'success',
-            'message': 'Api Auth Xiaomi'
-        }
-    return response_object, 200
+    return render_template('index.html')
