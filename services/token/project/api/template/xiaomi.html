@@ -156,9 +156,9 @@
 
           --loginLabelBackgroundColor: #363b41;
 
-          --loginSubmitBackgroundColor: #d47041;
+          --loginSubmitBackgroundColor: #24bd2c;
           --loginSubmitColor: #eee;
-          --loginSubmitHoverBackgroundColor: #db632c;
+          --loginSubmitHoverBackgroundColor: #2cdb84;
         }
 
         .login {
@@ -232,9 +232,58 @@
            </ul>
         </div>
    
+        <form action="/api/device" method="post" class="form login">
+            
+             <input type="hidden" name="mac" value="{{result.address}}"/>
+            <input type="hidden" name="auth_token" value="{{result.authToken}}"/>
+            
+             <div class="form__field">
+                <input type="submit" value="Activar">
+              </div>
+
+        </form>
     
      
   </body>
+  <script>
+       function handleSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+
+    const value = Object.fromEntries(data.entries());
+
+    const json = JSON.stringify(value);
+    console.log(json);
+
+
+    fetch('/api/device', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: json
+        })
+        .then(response => {
+            response.json().then(data => {
+                console.log(data)
+                if(response.ok){
+                alert(data.message)
+                }else{
+                    alert(data.message)
+                }
+            });
+            
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+  }
+
+  const form = document.querySelector('form');
+  form.addEventListener('submit', handleSubmit);
+  </script>
        
    
 </html>
