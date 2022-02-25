@@ -8,8 +8,11 @@ from project import db
 from project.api.models import User,Device,Business
 from sqlalchemy import exc
 from project.api.huami_token import HuamiAmazfit
+from flask_cors import CORS  # nuevo
 
-users_blueprint = Blueprint("index", __name__,template_folder='./template')
+
+users_blueprint = Blueprint("index", __name__)
+CORS(users_blueprint)
 api = Api(users_blueprint)
 
 
@@ -294,6 +297,7 @@ class UserPairingCallbackApi(Resource):
 api.add_resource(HuamiCallback, '/xiaomi/callback') #web login
 #Api login
 api.add_resource(HuamiCallbackApi, '/api/auth/xiaomi/')
+
 api.add_resource(HuamiCallbackApiRegister, '/api/auth/xiaomi/register')
 # device API
 api.add_resource(DeviceCallbackApi, '/api/device')
