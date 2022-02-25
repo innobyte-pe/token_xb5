@@ -294,7 +294,6 @@ class UserPairingCallbackApi(Resource):
 api.add_resource(HuamiCallback, '/xiaomi/callback') #web login
 #Api login
 api.add_resource(HuamiCallbackApi, '/api/auth/xiaomi/')
-
 api.add_resource(HuamiCallbackApiRegister, '/api/auth/xiaomi/register')
 # device API
 api.add_resource(DeviceCallbackApi, '/api/device')
@@ -318,7 +317,3 @@ def index():
             'message': 'Api Auth Xiaomi'
         }
     return response_object, 200
-
-@users_blueprint.route('/xiaomi/activate', methods=['GET'])
-def index():
-    return render_template('index.html')
