@@ -24,7 +24,7 @@ def create_app(script_info=None):
 
     # preparando la extensión
     db.init_app(app)
-    toolbar.init_app(app) # nuevo
+    # toolbar.init_app(app) # nuevo
     # registrar blueprints
     from project.api.index import users_blueprint
 
