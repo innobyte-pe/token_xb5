@@ -29,7 +29,7 @@ def create_app(script_info=None):
     from project.api.index import users_blueprint
 
     app.register_blueprint(users_blueprint)
-    CORS(app)
+    CORS(app,allow_headers=['Content-Type'])
 
     # contexto shell para flask cli
     @app.shell_context_processor
