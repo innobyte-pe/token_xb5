@@ -1,7 +1,7 @@
 # services/users/project/api/users.py
 
 
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template,make_response
 from flask_restful import Resource, Api
 
 from project import db
@@ -50,9 +50,9 @@ class HuamiCallback(Resource):
         device_keys = device.get_wearable_auth_keys()
         for device_key in device_keys:
             device_keys[device_key]
-
+            
         #return device_keys
-        return render_template('xiaomi.html')
+        return make_response(render_template('xiaomi.html',result = device_keys),200)
 
 class HuamiCallbackApi(Resource):
     def post(self):
