@@ -25,7 +25,7 @@ def create_app(script_info=None):
     # preparando la extensión
     db.init_app(app)
     toolbar.init_app(app) # nuevo
-    cors.init_app(app)
+    cors.init_app(app,resources={r"/*":{"origins":"*"}})
     # registrar blueprints
     from project.api.index import users_blueprint
 
