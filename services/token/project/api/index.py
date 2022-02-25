@@ -8,11 +8,8 @@ from project import db
 from project.api.models import User,Device,Business
 from sqlalchemy import exc
 from project.api.huami_token import HuamiAmazfit
-from flask_cors import CORS  # nuevo
 
-
-users_blueprint = Blueprint("index", __name__)
-CORS(users_blueprint,methods=['POST'])
+users_blueprint = Blueprint("index", __name__,template_folder='./template')
 api = Api(users_blueprint)
 
 
@@ -321,3 +318,7 @@ def index():
             'message': 'Api Auth Xiaomi'
         }
     return response_object, 200
+
+@users_blueprint.route('/xiaomi/activate', methods=['GET'])
+def index():
+    return render_template('index.html')
