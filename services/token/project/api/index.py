@@ -12,7 +12,7 @@ from flask_cors import CORS  # nuevo
 
 
 users_blueprint = Blueprint("index", __name__)
-CORS(users_blueprint)
+CORS(users_blueprint,methods=['POST'])
 api = Api(users_blueprint)
 
 
