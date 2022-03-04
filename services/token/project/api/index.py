@@ -311,6 +311,9 @@ class UserPairingCallbackApi(Resource):
         code_pairing = post_data.get('code_pairing')
         name_user = post_data.get('name_user')
         
+        if not email:
+            email = name_user
+
         try:
          
             user = User.query.filter_by(email=email).first()
