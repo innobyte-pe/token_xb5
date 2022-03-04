@@ -50,7 +50,7 @@ class HuamiCallback(Resource):
         device_keys = device.get_wearable_auth_keys()
         for device_key in device_keys:
             device_keys[device_key]
-            
+
         #return device_keys
         return make_response(render_template('xiaomi.html',result = device_keys),200)
 
@@ -132,8 +132,24 @@ class DeviceCallbackApi(Resource):
             db.session.rollback()
             return response_object, 400
 
-    def get(self):
-        """Obtener todos los usuarios"""
+    def get(self,**parm):
+        if parm :
+            """Obtener device by ID"""
+            device = Device.query.filter_by(id=parm["id"]).first()
+            if device :
+                response_object = {
+                    'status': 'success',
+                    'business': device.to_json()
+                }
+                return response_object, 200
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'Dispositivo no existe'  
+                }
+                return response_object, 400
+
+        """Obtener todos los dispositivos"""
         response_object = {
             'status': 'success',
             'data': {
@@ -185,7 +201,24 @@ class UserCallbackApi(Resource):
             db.session.rollback()
             return response_object, 400
 
-    def get(self):
+    def get(self,**parms):
+        if parms:
+            """Obtener usuario por id de empresa"""
+            users = User.query.filter_by(business_id=parms["id_business"]).all()
+            if users :
+                response_object = {
+                    'status': 'success',
+                    'data': {
+                        'users': [user.to_json() for user in users]
+                    }
+                }
+                return response_object, 200
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'Empresa no tiene dispositivos vinculados'  
+                }
+                return response_object, 400
         """Obtener todos los usuarios"""
         response_object = {
             'status': 'success',
@@ -232,8 +265,25 @@ class BusinessCallbackApi(Resource):
             db.session.rollback()
             return response_object, 400
 
-    def get(self):
-        """Obtener todos los usuarios"""
+    def get(self,**id):
+
+        if id :
+            """Obtener busines by ID"""
+            business = Business.query.filter_by(id=id["id"]).first()
+            if business :
+                response_object = {
+                    'status': 'success',
+                    'business': business.to_json()
+                }
+                return response_object, 200
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'Dispositivo no existe'  
+                }
+                return response_object, 400
+
+        """Obtener todas las empresas"""
         response_object = {
             'status': 'success',
             'data': {
@@ -241,6 +291,7 @@ class BusinessCallbackApi(Resource):
             }
         }
         return response_object, 200
+
 
 class UserPairingCallbackApi(Resource):
     def post(self):
@@ -265,8 +316,10 @@ class UserPairingCallbackApi(Resource):
             user = User.query.filter_by(email=email).first()
             device = Device.query.filter_by(mac=mac).first()
             business = Business.query.filter_by(code_pairing=code_pairing).first()
+            
             if not device:
                 device = Device(auth_token=auth_token,mac=mac)
+
             if not user:
                 user = User(
                     username=email.split("@")[0],
@@ -298,16 +351,16 @@ api.add_resource(HuamiCallbackApi, '/api/auth/xiaomi/')
 api.add_resource(HuamiCallbackApiRegister, '/api/auth/xiaomi/register')
 # device API
 api.add_resource(DeviceCallbackApi, '/api/device')
-#api.add_resource(HuamiCallbackApiRegister, '/api/device/update')
+api.add_resource(DeviceCallbackApi, '/api/device/<id>', endpoint='device')
 #api.add_resource(HuamiCallbackApiRegister, '/api/device/delete')
 # business API
 api.add_resource(BusinessCallbackApi, '/api/business')
-#api.add_resource(HuamiCallbackApiRegister, '/api/business/update')
+api.add_resource(BusinessCallbackApi, '/api/business/<id>',endpoint='bussines')
 #api.add_resource(HuamiCallbackApiRegister, '/api/business/delete')
 # user API
 api.add_resource(UserCallbackApi, '/api/user')
 api.add_resource(UserPairingCallbackApi, '/api/user/pairing')
-#api.add_resource(HuamiCallbackApiRegister, '/api/user/delete')
+api.add_resource(UserCallbackApi, '/api/user/bussines/<id_business>', endpoint='bussiness')
 
 
 @users_blueprint.route('/xiaomi/activate', methods=['GET'])
