@@ -69,7 +69,6 @@ class Device(db.Model):
     mac = db.Column(db.String(128), nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
-
     def __init__(self,mac,auth_token):
         self.mac = mac
         self.auth_key = auth_token

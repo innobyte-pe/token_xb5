@@ -134,20 +134,40 @@ class DeviceCallbackApi(Resource):
 
     def get(self,**parm):
         if parm :
-            """Obtener device by ID"""
-            device = Device.query.filter_by(id=parm["id"]).first()
-            if device :
-                response_object = {
-                    'status': 'success',
-                    'business': device.to_json()
-                }
-                return response_object, 200
-            else:
-                response_object = {
-                    'status': 'fail',
-                    'message': 'Dispositivo no existe'  
-                }
-                return response_object, 400
+            if parm["address"]:
+                device = Device.query.filter_by(mac=parm["address"]).first()
+                if device :
+                    user_json = {}
+                    user = User.query.filter_by(device_id=device.id).first()
+                    if user:
+                        user_json = user.to_json()
+                    response_object = {
+                        'status': 'success',
+                        'device': device.to_json(),
+                        'user' : user_json
+                    }
+                    return response_object, 200
+                else:
+                    response_object = {
+                        'status': 'fail',
+                        'message': 'Dispositivo no existe'+ parm["address"]
+                    }
+                    return response_object, 400
+            else:    
+                """Obtener device by ID"""
+                device = Device.query.filter_by(id=parm["id"]).first()
+                if device :
+                    response_object = {
+                        'status': 'success',
+                        'business': device.to_json()
+                    }
+                    return response_object, 200
+                else:
+                    response_object = {
+                        'status': 'fail',
+                        'message': 'Dispositivo no existe'  
+                    }
+                    return response_object, 400
 
         """Obtener todos los dispositivos"""
         response_object = {
@@ -355,16 +375,16 @@ api.add_resource(HuamiCallbackApiRegister, '/api/auth/xiaomi/register')
 # device API
 api.add_resource(DeviceCallbackApi, '/api/device')
 api.add_resource(DeviceCallbackApi, '/api/device/<id>', endpoint='device')
+api.add_resource(DeviceCallbackApi, '/api/v1/check/address/<address>',endpoint='address')
 #api.add_resource(HuamiCallbackApiRegister, '/api/device/delete')
 # business API
 api.add_resource(BusinessCallbackApi, '/api/business')
 api.add_resource(BusinessCallbackApi, '/api/business/<id>',endpoint='bussines')
-#api.add_resource(HuamiCallbackApiRegister, '/api/business/delete')
 # user API
 api.add_resource(UserCallbackApi, '/api/user')
 api.add_resource(UserPairingCallbackApi, '/api/user/pairing')
 api.add_resource(UserCallbackApi, '/api/user/bussines/<id_business>', endpoint='bussiness')
-
+ 
 
 @users_blueprint.route('/xiaomi/activate', methods=['GET'])
 def index():
