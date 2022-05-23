@@ -67,8 +67,8 @@ class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     auth_key = db.Column(db.String(250), nullable=False)
     mac = db.Column(db.String(128), nullable=False)
-    number = db.Column(db.String(128), nullable=False,nullable=True)
-    serial = db.Column(db.String(128), nullable=False,nullable=True)
+    number = db.Column(db.String(128), nullable=True)
+    serial = db.Column(db.String(128), nullable=True)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
     def __init__(self,mac,auth_token):
