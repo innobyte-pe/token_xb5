@@ -150,7 +150,7 @@ class DeviceCallbackApi(Resource):
                 else:
                     response_object = {
                         'status': 'fail',
-                        'message': 'Dispositivo no existe'+ parm["address"]
+                        'message': 'Dispositivo no existe : '+ parm["address"]
                     }
                     return response_object, 400
             else:    
