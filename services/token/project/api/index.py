@@ -6,9 +6,10 @@ from flask_restful import Resource, Api
 
 from project import db
 from project.api.models import User,Device,Business
-from sqlalchemy import exc
+from sqlalchemy import exc,extract
 from project.api.huami_token import HuamiAmazfit
-
+from sqlalchemy.sql.functions import func
+from datetime import datetime
 users_blueprint = Blueprint("index", __name__,template_folder='./template')
 api = Api(users_blueprint)
 
@@ -367,6 +368,34 @@ class UserPairingCallbackApi(Resource):
         except (exc.IntegrityError, ValueError):
             db.session.rollback()
             return response_object, 400
+# Reporting total devices createds by date
+class ReportingByDate(Resource):
+    def get(self):    
+        try:
+            devices = db.session.query(
+                    extract('year', Device.created_date).label('year'),
+                    extract('month', Device.created_date).label('month'),
+                    db.func.count('*').label('devices')
+                ).group_by('year', 'month').all()
+
+            results = []
+            for row in devices:
+                if row.year != 0 and row.month != 0:
+                    results.append({'month': datetime(row.year, row.month, 1).strftime('%B %Y'), 'devices': row.devices})
+            response_object = {
+                'status': 'success',
+                 'data': {
+                        'devices': results
+                    }
+                }
+            return response_object,200
+        except(exc.IntegrityError, ValueError):
+            response_object = {
+                    'status': 'fail',
+                    'message': 'Error: '+ValueError  
+                }
+        return response_object,200
+
 
 api.add_resource(HuamiCallback, '/xiaomi/callback') #web login
 #Api login
@@ -384,6 +413,8 @@ api.add_resource(BusinessCallbackApi, '/api/business/<id>',endpoint='bussines')
 api.add_resource(UserCallbackApi, '/api/user')
 api.add_resource(UserPairingCallbackApi, '/api/user/pairing')
 api.add_resource(UserCallbackApi, '/api/user/bussines/<id_business>', endpoint='bussiness')
+# reporting web:
+api.add_resource(ReportingByDate, '/reporting/devices/activates')
  
 
 @users_blueprint.route('/xiaomi/activate', methods=['GET'])

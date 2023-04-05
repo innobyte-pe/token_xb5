@@ -1,6 +1,7 @@
 Flask==2.1.0
 Flask-RESTful>0.3.8
 Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.23
 itsdangerous==1.1.0
 mysqlclient==2.1.0
 Flask-Testing==0.8.0
