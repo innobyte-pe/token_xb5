@@ -1,6 +1,10 @@
 -- run Local
  docker-compose -f .\docker-compose-dev.yml up --build
 
+ -- recreate DB
+ docker-compose -f .\docker-compose-dev.yml exec token python manage.py recreate_db
+
+ --<run in : http://localhost:5001/>
 
 -- deploy AWS
 
