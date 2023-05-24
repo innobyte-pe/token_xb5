@@ -313,6 +313,33 @@ class BusinessCallbackApi(Resource):
         }
         return response_object, 200
 
+    def get(self,**params):
+
+        if params :
+            """Obtener busines by ID"""
+            business = Business.query.filter_by(code_pairing=params["code"]).first()
+            if business :
+                response_object = {
+                    'status': 'success',
+                    'business': business.to_json()
+                }
+                return response_object, 200
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': 'Dispositivo no existe'  
+                }
+                return response_object, 400
+
+        """Obtener todas las empresas"""
+        response_object = {
+            'status': 'success',
+            'data': {
+                'business': [business.to_json() for business in Business.query.all()]
+            }
+        }
+        return response_object, 200
+
 
 class UserPairingCallbackApi(Resource):
     def post(self):
@@ -409,6 +436,7 @@ api.add_resource(DeviceCallbackApi, '/api/v1/check/address/<address>',endpoint='
 # business API
 api.add_resource(BusinessCallbackApi, '/api/business')
 api.add_resource(BusinessCallbackApi, '/api/business/<id>',endpoint='bussines')
+api.add_resource(BusinessCallbackApi, '/api/business/pin/<code>',endpoint='code')
 # user API
 api.add_resource(UserCallbackApi, '/api/user')
 api.add_resource(UserPairingCallbackApi, '/api/user/pairing')
