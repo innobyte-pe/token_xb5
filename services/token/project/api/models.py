@@ -94,26 +94,43 @@ class Business(db.Model):
     code_pairing = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(128), nullable=False)
     type_deploy = db.Column(db.String(20), nullable=False)
-    date_expire = db.Column(db.DateTime,
-                                      default=datetime.utcnow,
-                                      nullable=False)
+    date_expire = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
+    
+    #id_campus = db.Column(db.Integer, db.ForeignKey('business.id'))
+    #campus = db.relationship('Business', backref=db.backref('parent', remote_side=[id]))
 
-    def __init__(self, code_pairing,name,type_deploy,date_expire):
+    id_campus = db.Column(db.Integer, db.ForeignKey('business.id'))
+    campus = db.relationship('Business', foreign_keys=[id_campus], backref=db.backref('parent', remote_side=[id]))
+
+    id_group = db.Column(db.Integer, db.ForeignKey('business.id'))
+    group = db.relationship('Business', foreign_keys=[id_group], backref=db.backref('parent_group', remote_side=[id]))
+     
+
+    def __init__(self, code_pairing, name, type_deploy, date_expire, id_campus,id_group):
         self.code_pairing = code_pairing
         self.name = name
         self.type_deploy = type_deploy
         self.date_expire = date_expire
+        self.id_campus = id_campus
+        self.id_group = id_group
 
     def to_json(self):
-        return {
+        serialized = {
             'id': self.id,
             'code_pairing': self.code_pairing,
             'name': self.name,
-            'matype_deploy': self.type_deploy,
+            'type_deploy': self.type_deploy,
             'date_expire': str(self.date_expire),
             'created_date': str(self.created_date),
-            'active': self.active
+            'active': self.active,
+            'campus': [],
+            'groups': [],
         }
+        if self.campus:
+           serialized['campus'] = [campus.to_json() for campus in self.campus]
 
+        if self.group:
+           serialized['groups'] = [group.to_json() for group in self.group]
+        return serialized

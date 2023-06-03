@@ -10,6 +10,10 @@ from flask.cli import FlaskGroup
 from project import create_app, db  # nuevo
 from project.api.models import User  # nuevo
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
 COV = coverage.coverage(
     branch=True,
     include='project/*',
@@ -19,6 +23,12 @@ COV = coverage.coverage(
     ]
 )
 COV.start()
+
+# Inicializar la aplicación de Firebase
+cred = credentials.Certificate("google-services.json")
+firebase_admin.initialize_app(cred)
+
+
 
 app = create_app()  # nuevo
 cli = FlaskGroup(create_app=create_app)  # nuevo

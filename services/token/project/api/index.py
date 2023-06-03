@@ -1,15 +1,18 @@
 # services/users/project/api/users.py
 
 
-from flask import Blueprint, request, render_template,make_response
-from flask_restful import Resource, Api
-
+from flask import Blueprint, request, render_template,make_response,jsonify
+from flask_restful import Resource, Api, reqparse
+import random
 from project import db
 from project.api.models import User,Device,Business
 from sqlalchemy import exc,extract
 from project.api.huami_token import HuamiAmazfit
 from sqlalchemy.sql.functions import func
 from datetime import datetime
+from firebase_admin import firestore
+from collections import defaultdict
+
 users_blueprint = Blueprint("index", __name__,template_folder='./template')
 api = Api(users_blueprint)
 
@@ -263,17 +266,27 @@ class BusinessCallbackApi(Resource):
         name = post_data.get('name')
         type_deploy = post_data.get('type_deploy')
         date_expire = post_data.get('date_expire')
+        id_campus = post_data.get('id_campus')
+        id_group = post_data.get('id_group')
         
         try:
             business = Business.query.filter_by(code_pairing=code_pairing).first()
             if business:
-                response_object['message'] = 'Sorry. Code Pairing already exists.'
-                return response_object, 400
+                business.name = name
+                business.type_deploy = type_deploy
+                business.date_expire = date_expire
+                business.id_campus = id_campus
+                business.id_group = id_group
+                db.session.commit()
+
+                response_object['status'] = 'success'
+                response_object['message'] = f'{name} was updated!'
+                return response_object, 200
 
             business = Business.query.filter_by(name=name).first()
             if not business:
                 db.session.add(Business(
-                    code_pairing=code_pairing, name=name, type_deploy=type_deploy,date_expire=date_expire)
+                    code_pairing=code_pairing, name=name, type_deploy=type_deploy,date_expire=date_expire,id_campus=id_campus,id_group=id_group)
                 )
                 db.session.commit()
                 response_object['status'] = 'success'
@@ -286,60 +299,65 @@ class BusinessCallbackApi(Resource):
             db.session.rollback()
             return response_object, 400
 
-    def get(self,**id):
-
-        if id :
-            """Obtener busines by ID"""
-            business = Business.query.filter_by(id=id["id"]).first()
-            if business :
-                response_object = {
-                    'status': 'success',
-                    'business': business.to_json()
-                }
-                return response_object, 200
-            else:
-                response_object = {
-                    'status': 'fail',
-                    'message': 'Dispositivo no existe'  
-                }
-                return response_object, 400
-
-        """Obtener todas las empresas"""
-        response_object = {
-            'status': 'success',
-            'data': {
-                'business': [business.to_json() for business in Business.query.all()]
-            }
-        }
-        return response_object, 200
-
     def get(self,**params):
-
-        if params :
-            """Obtener busines by ID"""
-            business = Business.query.filter_by(code_pairing=params["code"]).first()
-            if business :
-                response_object = {
-                    'status': 'success',
-                    'business': business.to_json()
-                }
-                return response_object, 200
-            else:
-                response_object = {
-                    'status': 'fail',
-                    'message': 'Dispositivo no existe'  
-                }
-                return response_object, 400
-
-        """Obtener todas las empresas"""
-        response_object = {
-            'status': 'success',
-            'data': {
-                'business': [business.to_json() for business in Business.query.all()]
+        if request.path == '/api/business/pin/generate':
+            unique_pin = self.generate_unique_pin()
+            response_object = {
+            'success': True,
+            'message': 'Code pairing generate Ok.',
+            'code_unique': unique_pin
             }
-        }
-        return response_object, 200
+            return response_object,200
+        
+        endpoint = request.url_rule.endpoint
+        if endpoint == 'index.bussines':
+                """Obtener busines by ID"""
+                business = Business.query.filter_by(id=params["id"]).first()
+                if business :
+                    response_object = {
+                        'status': 'success',
+                        'business': business.to_json()
+                    }
+                    return response_object, 200
+                else:
+                    response_object = {
+                        'status': 'fail',
+                        'message': 'Dispositivo no existe'  
+                    }
+                    return response_object, 400
+        
+        elif endpoint == 'index.code':
+                """Obtener busines by ID"""
+                business = Business.query.filter_by(code_pairing=params["code"]).first()
+                if business :
+                    response_object = {
+                        'status': 'success',
+                        'business': business.to_json()
+                    }
+                    return response_object, 200
+                else:
+                    response_object = {
+                        'status': 'fail',
+                        'message': 'Dispositivo no existe'  
+                    }
+                    return response_object, 400
+        
 
+        """GET default  Obtener todas las empresas"""
+        response_object = {
+                'status': 'success',
+                'data': {
+                    'business': [business.to_json() for business in Business.query.filter(Business.id_group == 0, Business.id_campus == 0).all()]
+                }
+            }
+        return response_object, 200
+    
+    def generate_unique_pin(self):
+        while True:
+            pin = str(random.randint(1000, 9999))
+            existing_pin = Business.query.filter_by(code_pairing=pin).first()
+            if existing_pin is None:
+                return pin
 
 class UserPairingCallbackApi(Resource):
     def post(self):
@@ -423,6 +441,16 @@ class ReportingByDate(Resource):
                 }
         return response_object,200
 
+class ReportingGenerate(Resource):
+    def get(self):
+        fire_db = firestore.client()
+        doc_ref = fire_db.collection('groupDevices').document('4a5395a9ed932202')
+        doc_snapshot = doc_ref.get()
+        # Obtener los datos del DocumentSnapshot
+        data = doc_snapshot.to_dict()
+        # Convertir los datos a JSON y enviar la respuesta
+                
+        return data["devices"],200
 
 api.add_resource(HuamiCallback, '/xiaomi/callback') #web login
 #Api login
@@ -437,12 +465,18 @@ api.add_resource(DeviceCallbackApi, '/api/v1/check/address/<address>',endpoint='
 api.add_resource(BusinessCallbackApi, '/api/business')
 api.add_resource(BusinessCallbackApi, '/api/business/<id>',endpoint='bussines')
 api.add_resource(BusinessCallbackApi, '/api/business/pin/<code>',endpoint='code')
+api.add_resource(BusinessCallbackApi, '/api/business/pin/generate',endpoint='generate')
+
 # user API
 api.add_resource(UserCallbackApi, '/api/user')
 api.add_resource(UserPairingCallbackApi, '/api/user/pairing')
 api.add_resource(UserCallbackApi, '/api/user/bussines/<id_business>', endpoint='bussiness')
 # reporting web:
 api.add_resource(ReportingByDate, '/reporting/devices/activates')
+
+# reporting devices xls
+api.add_resource(ReportingGenerate,'/report/status/device')
+
  
 
 @users_blueprint.route('/xiaomi/activate', methods=['GET'])

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "isleeplab",
+  "private_key_id": "c4d7eedf9631d2c76d901dbcaa782d27567cae19",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCTdDijMxMJejKc\nVjihAB0iq1yAjh2uZj+qnnOtjSUADsvfUw8ZdI+zfRmOT1lVXze0YzTJC9MhqXVX\nIixn6DIODKmuUm8W2845L/mKTHwt+Gwios5d2t3HV0yhxJXsds6Iut9NbbT2fDOx\njcsoFJvpXK7CgGpuE2mpez9afcv4FrJedlW1VkA2NOg9Sw7GdlRwmgmw2ww9wImc\nl2/N3VzxEZjq4KaVSisdboJQLb7Xi0uvwns38cgpDbXT/0pnaWnfSACsQekM/bk/\n0EyvgzbVfao+DGiYtA8tq4duIjUbqPXEsO/iFJiUy/7qH2/KX4JIIPW6dSOt5Mp4\n4BK7sS1JAgMBAAECggEAEQ496N6lApEgXoX4meLV++cfVX1awIvyLE2UqsvrLjUH\n7uaAFh0t7AB53sSd3Cqd2l8pQWH9Q2UC/helVEV+2LItRE0jrVyyX1oFvrH3ISgd\ndeon/aItyft2kTWYc9gQLq+S2bVpW6NlJVH14EZ1/EmsqzHIXcAgFir72n83gxQL\n+6/eNiPf4OQ8sRu9aIKgVJmYwFQBL6EhpDqiLSgmrBFekbEdawByAtEF3/1JrXti\nciN+Uytrzv+JPh3wFdXkT7P93GI4V+Q3EHD+5U5f4ISHzym53oAb6XUyWVnxj/mq\nvbGqi2yDShIejzXbW0wugiN9FsZY+EuiTHo7mD0E+wKBgQDNr3D6MzHBC5wrHoow\nhGihTYaQsclNPkTXUj/rlfFNgHochj0uip1OcggQsEdIn6WjOQO6xRWvFgk7sz2M\nMRfJnLNonXp6o2GxOuR5Q1ZSfWJYXQ9hXlIo5WShT8W9LRotJpQvebrDF0wl8Fkt\n+3NWWRRXkMmHqJG2fRKbNso73wKBgQC3hi4a/SZnd5cdbEbWLaedpq7+Eq555fVl\nwOKa3m9mpUouBpjtvv/WKOiOdunvPnajiFMtCIpw1KGN2E/tqvsmmOwb50Ou+okA\nwNH60q18NyHx3J0m1HZzurSxyf3hFIZ8USsllQLMmw1PLe+1YkN1fidFsOy+xCSs\neN82BYO71wKBgEL+W8wClLgN8gXRYq0+012GhMfoQGraV03SymMPaZMWv68+wfrA\nx0/fsGTPJcivxyGM1nwk6VUn1kYNsYRSES9nzL/MWzJKuO0jA3vDxQAFOt0RIotS\nT2xmmwo3k250nEwMfsOf4Ibetby9ti5V8lEznn6O+DUpYJyRzFel1uT9AoGAAk61\nlbFJIlPmmoAaA+dfDCRkXt1tRCsYAseCEeBqFihN3nZGxfZ40QCCrAfiuRdX9oZo\nRVCuLOz/ewEVQC++KKYTkeY+e5y6zD+gZD7x33Xx/1B+yVYyhxH546Jehs3zQuzi\nVf6homDwseYp9WXe40NKyx2GXH+q1mBOriczmNECgYEAypvAKIfkEq0uQFFIfl6l\nbS/mtRIrmxxe0EXQPDiiqWbYc6XMlvwwilBPzLNlywx0qUgH6AA8UhNHRCWGg8T2\nKtGmvAaaU99NpatrubXtBVIIse2Bh1SB8WjXXtQMwgQi8FYweTTQ9yMwarxEehjx\nxRQhMvXNtoc8dei/j6CMvdo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-e42vg@isleeplab.iam.gserviceaccount.com",
+  "client_id": "111942047721481255963",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-e42vg%40isleeplab.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
