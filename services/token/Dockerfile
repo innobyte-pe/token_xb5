@@ -1,13 +1,10 @@
-# base image
-FROM python:3.8.5-alpine
+FROM python:3.8.5
 
+# nuevo
 # instalando dependencias
-RUN apk update && \
-    apk add --virtual build-deps gcc python3-dev musl-dev && \
-    apk add mysql-dev && \
-    apk add netcat-openbsd && \
-    apk add mysql-client && \
-    apk add g++
+RUN apt-get update && \
+    apt-get install -y gcc python3-dev libffi-dev libssl-dev && \
+    apt-get install -y default-libmysqlclient-dev netcat-openbsd g++
 
 
 # estableciendo directorio de trabajo
