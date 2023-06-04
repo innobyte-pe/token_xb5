@@ -93,8 +93,8 @@ class Business(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     code_pairing = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(128), nullable=False)
-    type_deploy = db.Column(db.String(20), nullable=False)
-    date_expire = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    type_deploy = db.Column(db.DateTime, nullable=False)
+    date_expire = db.Column(db.DateTime, nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
     
