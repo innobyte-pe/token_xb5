@@ -265,7 +265,7 @@ class BusinessCallbackApi(Resource):
         code_pairing = post_data.get('code_pairing')
         name = post_data.get('name')
         type_deploy = post_data.get('type_deploy')
-        date_expire = post_data.get('date_expire')
+        date_expire = post_data.get('expire_date')
         id_campus = post_data.get('id_campus')
         id_group = post_data.get('id_group')
         
