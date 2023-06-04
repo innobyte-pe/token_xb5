@@ -108,11 +108,12 @@ class Business(db.Model):
     group = db.relationship('Business', foreign_keys=[id_group], backref=db.backref('parent_group', remote_side=[id]))
      
 
-    def __init__(self, code_pairing, name, type_deploy, date_expire, id_campus,id_group):
+    def __init__(self, code_pairing, name, type_deploy, date_expire, id_campus,id_group,created_date):
         self.code_pairing = code_pairing
         self.name = name
         self.type_deploy = type_deploy
         self.date_expire = date_expire
+        self.created_date = created_date
         self.id_campus = id_campus
         self.id_group = id_group
 
