@@ -93,10 +93,10 @@ class Business(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     code_pairing = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(128), nullable=False)
-    type_deploy = db.Column(db.DateTime, nullable=False)
+    type_deploy = db.Column(db.String(20), nullable=False)
     date_expire = db.Column(db.DateTime, nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
-    created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
+    created_date = db.Column(db.DateTime, nullable=False)
     
     #id_campus = db.Column(db.Integer, db.ForeignKey('business.id'))
     #campus = db.relationship('Business', backref=db.backref('parent', remote_side=[id]))
