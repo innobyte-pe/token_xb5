@@ -125,6 +125,8 @@ class Business(db.Model):
             'type_deploy': self.type_deploy,
             'date_expire': str(self.date_expire),
             'created_date': str(self.created_date),
+            'id_campus': self.id_campus,
+            'id_group': self.id_group,
             'active': self.active,
             'campus': [],
             'groups': [],
