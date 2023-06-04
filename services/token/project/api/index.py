@@ -282,9 +282,7 @@ class BusinessCallbackApi(Resource):
                 response_object['status'] = 'success'
                 response_object['message'] = f'{name} was updated!'
                 return response_object, 200
-
-            business = Business.query.filter_by(name=name).first()
-            if not business:
+            else:
                 db.session.add(Business(
                     code_pairing=code_pairing, name=name, type_deploy=type_deploy,date_expire=date_expire,id_campus=id_campus,id_group=id_group)
                 )
@@ -292,9 +290,7 @@ class BusinessCallbackApi(Resource):
                 response_object['status'] = 'success'
                 response_object['message'] = f'{name} was added!'
                 return response_object, 201
-            else:
-                response_object['message'] = 'Sorry. Business Name already exists.'
-                return response_object, 400
+
         except (exc.IntegrityError, ValueError):
             db.session.rollback()
             return response_object, 400
