@@ -266,15 +266,18 @@ class BusinessCallbackApi(Resource):
         name = post_data.get('name')
         type_deploy = post_data.get('type_deploy')
         date_expire = post_data.get('expire_date')
+        created_date = post_data.get('created_date') 
         id_campus = post_data.get('id_campus')
         id_group = post_data.get('id_group')
         
         try:
             business = Business.query.filter_by(code_pairing=code_pairing).first()
             if business:
+                ## update bussines
                 business.name = name
                 business.type_deploy = type_deploy
                 business.date_expire = date_expire
+                business.created_date = created_date
                 business.id_campus = id_campus
                 business.id_group = id_group
                 db.session.commit()
@@ -283,8 +286,15 @@ class BusinessCallbackApi(Resource):
                 response_object['message'] = f'{name} was updated!'
                 return response_object, 200
             else:
+                ## add new bussiness
                 db.session.add(Business(
-                    code_pairing=code_pairing, name=name, type_deploy=type_deploy,date_expire=date_expire,id_campus=id_campus,id_group=id_group)
+                    code_pairing=code_pairing, 
+                    name=name, 
+                    type_deploy=type_deploy,
+                    date_expire=date_expire,
+                    id_campus=id_campus,
+                    created_date = created_date
+                    id_group=id_group)
                 )
                 db.session.commit()
                 response_object['status'] = 'success'
