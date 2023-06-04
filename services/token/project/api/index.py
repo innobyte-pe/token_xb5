@@ -293,7 +293,7 @@ class BusinessCallbackApi(Resource):
                     type_deploy=type_deploy,
                     date_expire=date_expire,
                     id_campus=id_campus,
-                    created_date = created_date
+                    created_date = created_date,
                     id_group=id_group)
                 )
                 db.session.commit()
